@@ -12,7 +12,6 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.example.administrator.utils.DensityUtils;
@@ -90,12 +89,6 @@ public class WelcomeActivity extends Activity {
 
         // 注册一个监听页面切换事件
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            /**
-             *
-             * @param position
-             * @param positionOffset
-             * @param positionOffsetPixels
-             */
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -116,10 +109,7 @@ public class WelcomeActivity extends Activity {
 //                redPoint.setLayoutParams(param);
             }
 
-            /**
-             *
-             * @param state :页面的状态: 0 代表未移动   1: 正在移动   2： 正在切换
-             */
+            // @param state :页面的状态: 0 代表未移动   1: 正在移动   2： 正在切换
             @Override
             public void onPageScrollStateChanged(int state) {
                 Log.i("jxy", "state:" + state);

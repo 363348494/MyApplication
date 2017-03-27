@@ -31,7 +31,11 @@ public class IndexActivity extends Activity {
                     // 启动主页面
                     startActivity(intent);
                 } else {
-                    startActivity(new Intent(IndexActivity.this, WelcomeActivity.class));
+                    Intent intent = new Intent(IndexActivity.this, WelcomeActivity.class);
+                    // 标准模式在同一个APP中所有Activity都在同一个栈
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    // 启动主页面
+                    startActivity(intent);
                 }
             }
         }, 2000);
@@ -42,7 +46,6 @@ public class IndexActivity extends Activity {
         editor.putString("name", "admin");
         editor.commit();  // 真正写入
         Log.i("jxy", ref.getString("name", "abc") + ref.getString("password", "admin****"));
-
 
     }
 }
