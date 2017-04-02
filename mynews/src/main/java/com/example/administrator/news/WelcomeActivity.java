@@ -35,6 +35,7 @@ public class WelcomeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
         // 绑定组件
         initView();
         // 初始化数据
@@ -48,9 +49,10 @@ public class WelcomeActivity extends Activity {
         SharedPreUtils.setBoolean(this,"welcome_show",true);
         Intent intent = new Intent(this,MainActivity.class);
         // 标准模式在同一个APP中所有Activity都在同一个栈
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         // 启动主页面
         startActivity(intent);
+        WelcomeActivity.this.finish();
     }
 
     private void initView() {

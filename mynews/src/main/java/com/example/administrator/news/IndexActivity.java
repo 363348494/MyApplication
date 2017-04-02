@@ -27,15 +27,19 @@ public class IndexActivity extends Activity {
                 if (SharedPreUtils.getBoolean(IndexActivity.this, "welcome_show", false)) {
                     Intent intent = new Intent(IndexActivity.this, MainActivity.class);
                     // 标准模式在同一个APP中所有Activity都在同一个栈
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     // 启动主页面
                     startActivity(intent);
+                    // 结束activity
+                    IndexActivity.this.finish();
                 } else {
                     Intent intent = new Intent(IndexActivity.this, WelcomeActivity.class);
                     // 标准模式在同一个APP中所有Activity都在同一个栈
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     // 启动主页面
                     startActivity(intent);
+                    // 结束activity
+                    IndexActivity.this.finish();
                 }
             }
         }, 2000);
@@ -44,7 +48,8 @@ public class IndexActivity extends Activity {
         // 像config.xml中写入key与value
         SharedPreferences.Editor editor = ref.edit();
         editor.putString("name", "admin");
-        editor.commit();  // 真正写入
+        // 真正写入
+        editor.commit();
         Log.i("jxy", ref.getString("name", "abc") + ref.getString("password", "admin****"));
 
     }
