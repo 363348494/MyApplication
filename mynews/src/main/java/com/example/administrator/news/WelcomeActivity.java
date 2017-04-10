@@ -12,20 +12,33 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.example.administrator.utils.DensityUtils;
 import com.example.administrator.utils.SharedPreUtils;
 
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@ContentView(R.layout.activity_welcome)
 public class WelcomeActivity extends Activity {
 
+//    private void initView() {
+//        viewpager = (ViewPager) findViewById(R.id.viewpager);
+//        ll = (LinearLayout) findViewById(R.id.ll);
+//    }
+
+    @ViewInject(R.id.viewpager)
     private ViewPager viewpager;
+    @ViewInject(R.id.ll)
     private LinearLayout ll;
     private int pointMoveWidth = 0;
-    private Button btnStart = null;
 
     private List<View> iList = null;
 
@@ -34,30 +47,27 @@ public class WelcomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
-
+        x.view().inject(this);
+//        setContentView(R.layout.activity_welcome);
+        // 事件、组件、布局实现IOC的初始化
         // 绑定组件
-        initView();
+//        initView();
         // 初始化数据
         initData();
         Log.i("jxy", this.getResources().getDisplayMetrics().density + "");  // 3.0
 
     }
 
-    public void startMainActivity(View view){
+
+    // @Event(value = R.id.btn_goMain)
+    public void startMainActivity(View view) {
         // 设置欢迎页面已经显示过一次
-        SharedPreUtils.setBoolean(this,"welcome_show",true);
-        Intent intent = new Intent(this,MainActivity.class);
+        SharedPreUtils.setBoolean(this, "welcome_show", true);
+        Intent intent = new Intent(this, MainActivity.class);
         // 标准模式在同一个APP中所有Activity都在同一个栈
-        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         // 启动主页面
         startActivity(intent);
-        WelcomeActivity.this.finish();
-    }
-
-    private void initView() {
-        viewpager = (ViewPager) findViewById(R.id.viewpager);
-        ll = (LinearLayout) findViewById(R.id.ll);
     }
 
     private void initData() {
@@ -91,6 +101,12 @@ public class WelcomeActivity extends Activity {
 
         // 注册一个监听页面切换事件
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            /**
+             *
+             * @param position
+             * @param positionOffset
+             * @param positionOffsetPixels
+             */
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -111,7 +127,10 @@ public class WelcomeActivity extends Activity {
 //                redPoint.setLayoutParams(param);
             }
 
-            // @param state :页面的状态: 0 代表未移动   1: 正在移动   2： 正在切换
+            /**
+             *
+             * @param state :页面的状态: 0 代表未移动   1: 正在移动   2： 正在切换
+             */
             @Override
             public void onPageScrollStateChanged(int state) {
                 Log.i("jxy", "state:" + state);

@@ -1,50 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.administrator.news.MainActivity">
 
-    <LinearLayout
+    <com.example.administrator.view.NoScrollViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:orientation="horizontal">
+        android:layout_weight="1"
+        android:layout_height="0dp">
+        <!-- 动态加载布局文件 -->
+    </com.example.administrator.view.NoScrollViewPager>
+    
+    <RadioGroup
+        android:id="@+id/rgGroug"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
-            <RadioButton
-                style="@style/MainButton"
-                android:drawableTop="@drawable/news_btn_selector"
-                android:text="新闻"
-                android:textColor="@drawable/main_btn_text_selector" />
+        <RadioButton
+            style="@style/MainButton"
+            android:id="@+id/rbHome"
+            android:text="首页"
+            android:drawableTop="@drawable/main_btn_home_selector" />
+        <RadioButton
+            android:id="@+id/rbTime"
+            style="@style/MainButton"
+            android:text="时间链"
+            android:drawableTop="@drawable/main_btn_time_selector" />
+        <RadioButton
+            style="@style/MainButton"
+            android:text="电视"
+            android:drawableTop="@drawable/menu_tv_gray" />
+        <RadioButton
+            style="@style/MainButton"
+            android:text="我的"
+            android:drawableTop="@drawable/menu_about_gray" />
 
-            <RadioButton
-                style="@style/MainButton"
-                android:drawableTop="@drawable/live_btn_selector"
-                android:text="直播"
-                android:textColor="@drawable/main_btn_text_selector" />
+    </RadioGroup>
 
-            <RadioButton
-                style="@style/MainButton"
-                android:drawableTop="@drawable/topic_btn_selector"
-                android:text="话题"
-
-                android:textColor="@drawable/main_btn_text_selector" />
-
-            <RadioButton
-                style="@style/MainButton"
-                android:drawableTop="@drawable/me_btn_selector"
-                android:text="我"
-
-                android:textColor="@drawable/main_btn_text_selector" />
-        </RadioGroup>
-
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>
