@@ -25,7 +25,7 @@ public class HomePageFragment extends Fragment {
     @Nullable
     @Override  // 每个Fragment都有自己的XML配置文件
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.i("jxy",this.getClass() + "---->2: onCreateView");
+        //Log.i("jxy",this.getClass() + "---->2: onCreateView");
         return x.view().inject(this,inflater,null);
 //        return View.inflate(this.getActivity(), R.layout.home_page,null);
     }
