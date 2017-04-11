@@ -8,14 +8,14 @@ public class TimePageListItem {
 
     private String time;
     private String title;
-    private String imgurl;
-    private String contenturl;
+    private String imgUrl;
+    private String contentUrl;
 
-    public TimePageListItem(String title, String time, String imgurl, String contenturl) {
+    public TimePageListItem(String title, String time, String imgUrl, String contentUrl) {
         this.title = title;
         this.time = time;
-        this.imgurl = imgurl;
-        this.contenturl = contenturl;
+        this.imgUrl = imgUrl;
+        this.contentUrl = contentUrl;
     }
 
     public String getTime() {
@@ -26,12 +26,12 @@ public class TimePageListItem {
         return title;
     }
 
-    public String getImgurl() {
-        return imgurl;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public String getContenturl() {
-        return contenturl;
+    public String getContentUrl() {
+        return contentUrl;
     }
 
     public void setTime(String time) {
@@ -42,11 +42,21 @@ public class TimePageListItem {
         this.title = title;
     }
 
-    public void setImgurl(String imgurl) {
-        this.imgurl = imgurl;
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
-    public void setContenturl(String contenturl) {
-        this.contenturl = contenturl;
+    public void setContentUrl(String contentUrl) {
+        this.contentUrl = contentUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "TimePageListItem{" +
+                "time='" + time + '\'' +
+                ", title='" + title + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", contentUrl='" + contentUrl + '\'' +
+                '}';
     }
 }

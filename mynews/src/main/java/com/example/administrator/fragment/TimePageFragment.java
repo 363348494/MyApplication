@@ -5,12 +5,10 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,15 +26,9 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 
 /**
@@ -48,7 +40,7 @@ public class TimePageFragment extends Fragment {
     @ViewInject(R.id.listview)  // 需要添加listItem
     private ListView listview;
 
-    private ArrayList<TimePageListItem> data;
+    private ArrayList<TimePageListItem> listdata = new ArrayList<>();
 
     @Override
     public void onAttach(Context context) {
@@ -72,98 +64,46 @@ public class TimePageFragment extends Fragment {
     @Override  // 布局创建完毕,一般此方法用来初始化数据
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //Log.i("jxy", this.getClass() + "---->4: onViewCreated");
+        Log.i("jxy", this.getClass() + "---->4: onViewCreated");
         // 给listView添加数据(创建适配器),不能直接添加,listview.addView();
 
         // 1: 此处应该先发送http请求,如果进入: onSuccess,则说明数据已经获取
         RequestParams params = new RequestParams("http://hiwbs101083.jsp.jspee.com.cn/NewServlet");
-        x.http().post(params, new Callback.CacheCallback<String>(){
+        x.http().get(params, new Callback.CacheCallback<String>() {
 
             @Override
             public void onSuccess(String result) {
+                Log.i("jxy", "http post request success");
+
                 String buffer = result;
+                //Log.i("jxy", "buffer = " + buffer);
 
                 // 2: Gson 把string转化为model /map
 
                 //Json的解析类对象
                 JsonParser parser = new JsonParser();
                 //将JSON的String 转成一个JsonArray对象
+
                 JsonArray jsonArray = parser.parse(buffer).getAsJsonArray();
 
                 Gson gson = new Gson();
 
                 for (JsonElement item : jsonArray) {
+                    //Log.i("jxy", "item = " + item);
                     TimePageListItem timePageListItem = gson.fromJson(item, TimePageListItem.class);
-                    data.add(timePageListItem);
+                    //Log.i("jxy", "timePageListItem = " + timePageListItem.toString());
+                    listdata.add(timePageListItem);
                 }
 
+                //Log.i("jxy", "data[0] = " + listdata.get(0));
+
                 // 3: 根据for循环,对item里面的view控件进行赋值(ImagerView需要单独获取)
-                listview.setAdapter(new BaseAdapter() {
-
-                    private LayoutInflater inflater = null;
-
-                    @Override
-                    public int getCount() {
-                        return data.size();
-                    }
-
-                    @Override
-                    public Object getItem(int position) {
-                        return data.get(position);
-                    }
-
-                    @Override
-                    public long getItemId(int position) {
-                        return position;
-                    }
-
-                    @Override
-                    public View getView(int position, View convertView, ViewGroup parent) {
-                        ViewHolder holder = null;
-                        if (convertView == null) {
-                            // 获得ViewHolder对象
-                            holder = new ViewHolder();
-                            // 导入布局并赋值给convertview
-                            convertView = inflater.inflate(R.layout.time_list_item, null);
-                            holder.tv = (TextView) convertView.findViewById(R.id.tv1);
-                            holder.tv2 = (TextView) convertView.findViewById(R.id.tv2);
-                            holder.iv = (ImageView) convertView
-                                    .findViewById(R.id.iv);
-                            // 为view设置标签
-                            convertView.setTag(holder);
-                        } else {
-                            // 取出holder
-                            holder = (ViewHolder) convertView.getTag();
-                        }
-
-                        // 设置list中TextView的显示
-                        holder.tv.setText(data.get(position).getTime());
-                        holder.tv2.setText(data.get(position).getTitle());
-                        URL url = null;
-                        try {
-                            url = new URL(data.get(position).getImgurl());
-                        } catch (MalformedURLException e) {
-                            e.printStackTrace();
-                        }
-
-                        try {
-                            holder.iv.setImageBitmap(BitmapFactory.decodeStream(url.openStream()));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        return convertView;
-                    }
-
-                    class ViewHolder {
-                        public TextView tv;
-                        public TextView tv2;
-                        public ImageView iv;
-                    }
-                });
+                listview.setAdapter(new MyAdapter(getContext(), listdata));
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
+                Log.i("jxy", ex.toString());
 
             }
 
@@ -182,7 +122,6 @@ public class TimePageFragment extends Fragment {
                 return false;
             }
         });
-
 
     }
 
@@ -222,5 +161,72 @@ public class TimePageFragment extends Fragment {
         //Log.i("jxy", this.getClass() + "---->10: onDestroy");
     }
 
+    class MyAdapter extends android.widget.BaseAdapter {
+
+        private Context context;
+
+        private LayoutInflater inflater = null;
+
+        private ArrayList<TimePageListItem> data = new ArrayList<>();
+
+        public MyAdapter(Context context, ArrayList<TimePageListItem> listData) {
+            this.context = context;
+            data = listData;
+            inflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public int getCount() {
+            return data.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return data.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder = null;
+            if (convertView == null) {
+                // 获得ViewHolder对象
+                holder = new ViewHolder();
+                // 导入布局并赋值给convertview
+                convertView = inflater.inflate(R.layout.time_list_item, null);
+                holder.tv = (TextView) convertView.findViewById(R.id.tv1);
+                holder.tv2 = (TextView) convertView.findViewById(R.id.tv2);
+                holder.iv = (ImageView) convertView
+                        .findViewById(R.id.iv);
+                // 为view设置标签
+                convertView.setTag(holder);
+            } else {
+                // 取出holder
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            // 设置list中TextView的显示
+            holder.tv.setText(data.get(position).getTime());
+            holder.tv2.setText(data.get(position).getTitle());
+            try {
+                URL url = new URL(data.get(position).getImgUrl());
+                holder.iv.setImageBitmap(BitmapFactory.decodeStream(url.openStream()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return convertView;
+        }
+
+        class ViewHolder {
+            public TextView tv;
+            public TextView tv2;
+            public ImageView iv;
+        }
+    }
 
 }
