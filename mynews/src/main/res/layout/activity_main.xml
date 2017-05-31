@@ -33,13 +33,15 @@
             android:text="时间链"
             android:drawableTop="@drawable/main_btn_time_selector" />
         <RadioButton
+            android:id="@+id/rbTv"
             style="@style/MainButton"
             android:text="电视"
-            android:drawableTop="@drawable/menu_tv_gray" />
+            android:drawableTop="@drawable/main_btn_tv_selector" />
         <RadioButton
+            android:id="@+id/rbMine"
             style="@style/MainButton"
             android:text="我的"
-            android:drawableTop="@drawable/menu_about_gray" />
+            android:drawableTop="@drawable/main_btn_mine_selector" />
 
     </RadioGroup>
 

@@ -9,7 +9,9 @@ import android.support.v4.view.ViewPager;
 import android.widget.RadioGroup;
 
 import com.example.administrator.fragment.HomePageFragment;
+import com.example.administrator.fragment.MinePageFragment;
 import com.example.administrator.fragment.TimePageFragment;
+import com.example.administrator.fragment.TvPageFragment;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
@@ -17,6 +19,7 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /*
 *
 * */
@@ -39,24 +42,31 @@ public class MainActivity extends FragmentActivity {
     }
 
     // 进行组件的赋值操作
-    private void initData(){
+    private void initData() {
         // 给ViewPager添加数据,
 //        viewpager.setAdapter(new MainPage());
         // 如果添加Fragment则需要相应的适配器支持
         viewpager.setAdapter(new MainFragmentPage(getSupportFragmentManager()));
         // 给按钮组注册单击事件,让单击触发ViewPager页面切换
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override  // Called when the checked radio button has changed. When the selection is cleared, checkedId is -1.
+            @Override
+            // Called when the checked radio button has changed. When the selection is cleared, checkedId is -1.
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                   switch (checkedId){
-                           case R.id.rbHome:
-                               // 手动调用viewPager切换页面
-                               viewpager.setCurrentItem(0,true);
-                               break;
-                           case R.id.rbTime:
-                               viewpager.setCurrentItem(1,true);
-                               break;
-                   }
+                switch (checkedId) {
+                    case R.id.rbHome:
+                        // 手动调用viewPager切换页面
+                        viewpager.setCurrentItem(0, true);
+                        break;
+                    case R.id.rbTime:
+                        viewpager.setCurrentItem(1, true);
+                        break;
+                    case R.id.rbTv:
+                        viewpager.setCurrentItem(2, true);
+                        break;
+                    case R.id.rbMine:
+                        viewpager.setCurrentItem(3, true);
+                        break;
+                }
             }
         });
     }
@@ -69,12 +79,14 @@ public class MainActivity extends FragmentActivity {
 
     private class MainFragmentPage extends FragmentPagerAdapter {
 
-        List<Fragment> iList=new ArrayList<Fragment>();
+        List<Fragment> iList = new ArrayList<Fragment>();
 
         public MainFragmentPage(FragmentManager fm) {
             super(fm);
             iList.add(new HomePageFragment());
             iList.add(new TimePageFragment());
+            iList.add(new TvPageFragment());
+            iList.add(new MinePageFragment());
         }
 
         @Override

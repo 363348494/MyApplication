@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 
 import com.example.administrator.news.R;
 
-import org.xutils.view.annotation.ContentView;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,7 +92,6 @@ public class HomePageFragment extends Fragment {
         }
 
         fAdapter = new TabLayoutAdapter(getActivity().getSupportFragmentManager(), list_fragment, list_title);
-
         //viewpager加载adapter
         vp_FindFragment_pager.setAdapter(fAdapter);
         //tab_FindFragment_title.setViewPager(vp_FindFragment_pager);
