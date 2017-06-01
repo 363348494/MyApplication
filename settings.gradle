@@ -1,1 +1,1 @@
-include ':mynews'
+include ':mynews', ':magicindicator'

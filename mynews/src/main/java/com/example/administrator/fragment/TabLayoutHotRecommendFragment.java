@@ -1,5 +1,6 @@
 package com.example.administrator.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.administrator.news.R;
+
+import net.lucode.hackware.magicindicator.MagicIndicator;
+import net.lucode.hackware.magicindicator.ViewPagerHelper;
+import net.lucode.hackware.magicindicator.buildins.circlenavigator.CircleNavigator;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
@@ -24,6 +29,8 @@ public class TabLayoutHotRecommendFragment extends Fragment {
 
     @ViewInject(R.id.viewPager)
     private ViewPager viewPager;
+    @ViewInject(R.id.magic_indicator1)
+    private MagicIndicator magicIndicator;
 
     @Nullable
     @Override  // 每个Fragment都有自己的XML配置文件
@@ -36,6 +43,18 @@ public class TabLayoutHotRecommendFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         viewPager.setAdapter(new MyPageAdapter());
+
+        CircleNavigator circleNavigator = new CircleNavigator(getContext());
+        circleNavigator.setCircleCount(3);
+        circleNavigator.setCircleColor(Color.LTGRAY);
+        circleNavigator.setCircleClickListener(new CircleNavigator.OnCircleClickListener() {
+            @Override
+            public void onClick(int index) {
+                viewPager.setCurrentItem(index);
+            }
+        });
+        magicIndicator.setNavigator(circleNavigator);
+        ViewPagerHelper.bind(magicIndicator, viewPager);
     }
 
     private class MyPageAdapter extends PagerAdapter {
@@ -58,6 +77,7 @@ public class TabLayoutHotRecommendFragment extends Fragment {
             container.addView(view); // 必须添加,否则加载的View将不会被显示
             return view;
         }
+
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
